@@ -15,6 +15,14 @@ export const metadata: Metadata = {
   title: "Luqman Fabrics | Quality You Feel, Style You Love | Pakistan Fabric Boutique",
   description: "Shop luxury unstitched Pakistani fabrics at Luqman Fabrics. Authentic Swiss Lawn, Men's Royal Boski, Japanese Wash & Wear, Embroidered Chiffon, Pure Cotton & Winter Karandi. Nationwide Cash on Delivery & Direct WhatsApp Orders (+92 340 9797271).",
   keywords: "Luqman Fabrics, Shewa, Pakistan, Boski, Swiss Lawn, Unstitched Fabric, Men Wash and Wear, Chiffon Embroidered, Pure Cotton, WhatsApp Fabric Store",
+  icons: {
+    icon: [
+      { url: '/icon.svg', type: 'image/svg+xml' },
+      { url: '/favicon.svg', type: 'image/svg+xml' },
+    ],
+    shortcut: '/icon.svg',
+    apple: '/icon.svg',
+  },
   openGraph: {
     title: "Luqman Fabrics | Luxury Pakistani Textiles & Unstitched Suits",
     description: "Quality You Feel, Style You Love. Order with direct WhatsApp confirmation +92 340 9797271.",

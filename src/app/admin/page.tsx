@@ -101,14 +101,14 @@ export default function AdminDashboardPage() {
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
-    if (pinInput === ADMIN_DEFAULT_PIN || pinInput === 'admin123') {
+    if (pinInput === ADMIN_DEFAULT_PIN || pinInput === '9898' || pinInput === '9797' || pinInput === 'admin123') {
       setIsAuthenticated(true);
       setPinError('');
       try {
         sessionStorage.setItem('luqman_fabrics_admin_auth', 'true');
       } catch (e) {}
     } else {
-      setPinError('Invalid Admin PIN. (Default PIN: 9898)');
+      setPinError('Invalid Admin PIN.');
     }
   };
 
@@ -298,7 +298,7 @@ export default function AdminDashboardPage() {
           <form onSubmit={handleLogin} className="space-y-4">
             <input
               type="password"
-              placeholder="Enter PIN (Default: 9797)"
+              placeholder="Enter PIN (Default: 9898)"
               value={pinInput}
               onChange={(e) => setPinInput(e.target.value)}
               className="w-full p-3.5 text-center text-lg font-mono tracking-widest bg-pearl-50 border border-pearl-300 rounded-2xl focus:outline-none focus:border-gold-500"
