@@ -227,22 +227,58 @@ export default function HomePage() {
             </div>
           </div>
 
-          {/* Product Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {filteredProducts.slice(0, 8).map((product, idx) => (
-              <ProductCard key={product.id} product={product} priority={idx < 4} />
-            ))}
-          </div>
+          {/* Product Grid or Clean Boutique Invitation */}
+          {filteredProducts.length === 0 ? (
+            <div className="bg-white rounded-3xl border border-pearl-200 p-10 sm:p-14 text-center space-y-4 shadow-sm max-w-2xl mx-auto">
+              <div className="w-14 h-14 rounded-2xl bg-pearl-100 text-gold-700 flex items-center justify-center mx-auto">
+                <Sparkles className="w-6 h-6 text-gold-600" />
+              </div>
+              <div className="space-y-1">
+                <h3 className="font-serif text-2xl font-bold text-neutral-900">
+                  New Spring/Summer Catalog Updating
+                </h3>
+                <p className="text-xs sm:text-sm text-neutral-500 leading-relaxed max-w-md mx-auto">
+                  Our artisans are cataloging luxury lawn & executive Boski pieces. Explore our signature categories or connect on WhatsApp for instant video previews.
+                </p>
+              </div>
+              <div className="pt-2 flex flex-wrap items-center justify-center gap-3">
+                <Link
+                  href="/shop"
+                  className="px-6 py-3 bg-charcoal-900 hover:bg-gold-500 hover:text-charcoal-950 text-white font-serif uppercase tracking-widest text-xs font-bold rounded-full shadow-md transition-all inline-flex items-center gap-2"
+                >
+                  <span>Browse Collections</span>
+                  <ArrowRight className="w-3.5 h-3.5" />
+                </Link>
+                <a
+                  href={`https://wa.me/${settings.whatsappNumber}?text=${encodeURIComponent('Assalam-o-Alaikum Luqman Fabrics! I would like to inquire about your available unstitched fabrics.')}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="px-6 py-3 bg-emerald-600 hover:bg-emerald-500 text-white font-serif uppercase tracking-widest text-xs font-bold rounded-full shadow-md transition-all inline-flex items-center gap-2"
+                >
+                  <PhoneCall className="w-3.5 h-3.5" />
+                  <span>WhatsApp Boutique</span>
+                </a>
+              </div>
+            </div>
+          ) : (
+            <>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                {filteredProducts.slice(0, 8).map((product, idx) => (
+                  <ProductCard key={product.id} product={product} priority={idx < 4} />
+                ))}
+              </div>
 
-          <div className="mt-14 text-center">
-            <Link
-              href="/shop"
-              className="inline-flex items-center gap-3 px-8 py-4 bg-charcoal-900 hover:bg-charcoal-800 text-white font-serif uppercase tracking-widest text-xs sm:text-sm font-bold rounded-full shadow-lg hover:shadow-xl transition-all"
-            >
-              <span>View Entire Fabric Catalog</span>
-              <ArrowRight className="w-4 h-4 text-gold-400" />
-            </Link>
-          </div>
+              <div className="mt-14 text-center">
+                <Link
+                  href="/shop"
+                  className="inline-flex items-center gap-3 px-8 py-4 bg-charcoal-900 hover:bg-charcoal-800 text-white font-serif uppercase tracking-widest text-xs sm:text-sm font-bold rounded-full shadow-lg hover:shadow-xl transition-all"
+                >
+                  <span>View Entire Fabric Catalog</span>
+                  <ArrowRight className="w-4 h-4 text-gold-400" />
+                </Link>
+              </div>
+            </>
+          )}
         </div>
       </section>
 

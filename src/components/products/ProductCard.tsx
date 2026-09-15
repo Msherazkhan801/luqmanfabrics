@@ -31,9 +31,12 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, priority = fa
   const [isHovered, setIsHovered] = useState(false);
   const [isAdded, setIsAdded] = useState(false);
 
-  const selectedColor = product.colors[selectedColorIndex] || product.colors[0];
-  const activeImage = selectedColor.image || product.images[0];
-  const hoverImage = product.images[1] || activeImage;
+  const [imgError, setImgError] = useState(false);
+
+  const selectedColor = product.colors?.[selectedColorIndex] || product.colors?.[0] || { name: 'Standard', hex: '#000000', image: '' };
+  const rawActiveImage = selectedColor.image || product.images?.[0] || '/images/hero.jpg';
+  const activeImage = imgError ? '/images/hero.jpg' : rawActiveImage;
+  const hoverImage = product.images?.[1] || activeImage;
 
   const handleQuickAdd = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -59,6 +62,8 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, priority = fa
     ? Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100)
     : 0;
 
+  const displaySrc = isHovered && hoverImage !== activeImage ? hoverImage : activeImage;
+
   return (
     <div
       className="group relative flex flex-col bg-white rounded-2xl overflow-hidden border border-pearl-300/80 hover:border-gold-400/60 shadow-sm hover:shadow-xl transition-all duration-500 hover:-translate-y-1"
@@ -70,12 +75,14 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, priority = fa
         <Link href={`/product/${product.id}`} className="block w-full h-full">
           {/* Main Image */}
           <Image
-            src={isHovered && hoverImage !== activeImage ? hoverImage : activeImage}
+            src={displaySrc}
             alt={product.name}
             fill
             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
             className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
             priority={priority}
+            unoptimized={displaySrc?.startsWith('data:')}
+            onError={() => setImgError(true)}
           />
         </Link>
 

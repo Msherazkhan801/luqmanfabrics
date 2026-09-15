@@ -57,6 +57,9 @@ interface StoreContextType {
   openTrackOrderModal: (prefill?: string) => void;
   closeTrackOrderModal: () => void;
   resetToSampleData: () => void;
+  clearAllOrders: () => void;
+  clearAllProducts: () => void;
+  clearAllDummyData: () => void;
 }
 
 const StoreContext = createContext<StoreContextType | undefined>(undefined);
@@ -130,11 +133,28 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
           setOrders(cloudOrders);
         }
       }, (err) => {
-        console.warn("Firestore onSnapshot error:", err);
+        console.warn("Firestore onSnapshot orders error:", err);
+      });
+
+      const productsCol = collection(db, 'products');
+      const unsubscribeProducts = onSnapshot(productsCol, (snapshot) => {
+        if (!snapshot.empty) {
+          const cloudProducts: Product[] = [];
+          snapshot.forEach((doc) => {
+            const data = doc.data() as Product;
+            if (data && data.id) {
+              cloudProducts.push(data);
+            }
+          });
+          setProducts(cloudProducts);
+        }
+      }, (err) => {
+        console.warn("Firestore onSnapshot products error:", err);
       });
 
       return () => {
         unsubscribeOrders();
+        unsubscribeProducts();
       };
     } catch (e) {
       // Offline fallback
@@ -289,6 +309,35 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     syncSettingsToFirestore(updated);
   };
 
+  const clearAllOrders = () => {
+    // Delete all current orders from Firestore
+    orders.forEach((o) => deleteOrderFromFirestore(o.id));
+    setOrders([]);
+    try {
+      localStorage.setItem('luqman_fabrics_orders', JSON.stringify([]));
+    } catch (e) {}
+  };
+
+  const clearAllProducts = () => {
+    // Delete all current products from Firestore
+    products.forEach((p) => deleteProductFromFirestore(p.id));
+    setProducts([]);
+    try {
+      localStorage.setItem('luqman_fabrics_products', JSON.stringify([]));
+    } catch (e) {}
+  };
+
+  const clearAllDummyData = () => {
+    clearAllOrders();
+    clearAllProducts();
+    try {
+      localStorage.removeItem('luqman_fabrics_products');
+      localStorage.removeItem('luqman_fabrics_orders');
+      localStorage.setItem('luqman_fabrics_products', JSON.stringify([]));
+      localStorage.setItem('luqman_fabrics_orders', JSON.stringify([]));
+    } catch (e) {}
+  };
+
   const resetToSampleData = () => {
     setProducts(INITIAL_PRODUCTS);
     setOrders(INITIAL_ORDERS);
@@ -326,6 +375,9 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         openTrackOrderModal,
         closeTrackOrderModal,
         resetToSampleData,
+        clearAllOrders,
+        clearAllProducts,
+        clearAllDummyData,
       }}
     >
       {children}
