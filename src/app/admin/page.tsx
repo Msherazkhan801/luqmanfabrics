@@ -101,7 +101,7 @@ export default function AdminDashboardPage() {
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
-    if (pinInput === ADMIN_DEFAULT_PIN || pinInput === '9898' || pinInput === '9797' || pinInput === 'admin123') {
+    if (pinInput === ADMIN_DEFAULT_PIN || pinInput === '9696' || pinInput === '9797' || pinInput === 'admin123') {
       setIsAuthenticated(true);
       setPinError('');
       try {
